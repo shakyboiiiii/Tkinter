@@ -1,0 +1,68 @@
+pip install pygame
+import pygame
+import random
+pygame.init()
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Space Invaders (No Image, No Sound)")
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+BLACK = (0, 0, 0)
+player_x = WIDTH // 2
+player_y = HEIGHT - 60
+player_speed = 5
+player_width = 50
+player_height = 20
+bullet_x = 0
+bullet_y = player_y
+bullet_speed = 7
+bullet_active = False
+enemy_x = random.randint(0, WIDTH - 40)
+enemy_y = random.randint(50, 150)
+enemy_speed = 3
+enemy_width = 40
+enemy_height = 20
+score = 0
+font = pygame.font.SysFont(None, 36)
+def show_score():
+    text = font.render(f"Score: {score}", True, WHITE)
+    screen.blit(text, (10, 10))
+running = True
+clock = pygame.time.Clock()
+while running:
+    clock.tick(60)
+    screen.fill(BLACK)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and not bullet_active:
+                bullet_x = player_x + player_width // 2
+                bullet_y = player_y
+                bullet_active = True
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] and player_x > 0:
+        player_x -= player_speed
+    if keys[pygame.K_RIGHT] and player_x < WIDTH - player_width:
+        player_x += player_speed
+    if bullet_active:
+        bullet_y -= bullet_speed
+        pygame.draw.rect(screen, RED, (bullet_x, bullet_y, 5, 10))
+        if bullet_y < 0:
+            bullet_active = False
+    enemy_x += enemy_speed
+    if enemy_x <= 0 or enemy_x >= WIDTH - enemy_width:
+        enemy_speed *= -1
+        enemy_y += 20
+    if bullet_active:
+        if enemy_x < bullet_x < enemy_x + enemy_width and enemy_y < bullet_y < enemy_y + enemy_height:
+            bullet_active = False
+            enemy_x = random.randint(0, WIDTH - enemy_width)
+            enemy_y = random.randint(50, 150)
+            score += 1
+    pygame.draw.rect(screen, GREEN, (player_x, player_y, player_width, player_height))
+    pygame.draw.rect(screen, WHITE, (enemy_x, enemy_y, enemy_width, enemy_height))
+    show_score()
+    pygame.display.update()
+pygame.quit()
