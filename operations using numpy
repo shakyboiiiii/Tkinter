@@ -1,0 +1,12 @@
+import numpy as np
+original_array = np.linspace(0, 9, 10, dtype=int)
+print("Original Array:", original_array)
+modified_array = np.where(original_array % 2 != 0, -1, original_array)
+print("Modified Array (Odds replaced):", modified_array)
+two_dim_array = original_array.reshape(2, 5)
+print("2D Array (2 Rows):\n", two_dim_array)
+even_sum = 0
+for num in original_array:
+    if num % 2 == 0:
+        even_sum += num
+print("Sum of Even Numbers:", even_sum)
