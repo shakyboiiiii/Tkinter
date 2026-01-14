@@ -1,0 +1,23 @@
+import tkinter as tk
+def calculate():
+    p = float(principal.get())
+    r = float(rate.get())
+    t = float(time.get())
+    si = (p * r * t) / 100
+    result.set(f"Simple Interest: {si}\nTotal Amount: {p + si}")
+root = tk. Tk()
+root.title("Interest Calculator")
+root.geometry("300x250")
+principal = tk.StringVar()
+rate = tk. StringVar()
+time = tk.StringVar()
+result = tk. StringVar()
+tk.Label(root, text="Principal") .pack()
+tk.Entry(root, textvariable=principal) .pack()
+tk.Label(root, text="Rate (%)") .pack()
+tk. Entry(root, textvariable=rate) .pack()
+tk.Label(root, text="Time (years)") .pack()
+tk. Entry(root, textvariable=time) .pack()
+tk. Button(root, text="Calculate", command=calculate) .pack(pady=10)
+tk.Label(root, textvariable=result) .pack()
+root.mainloop()
